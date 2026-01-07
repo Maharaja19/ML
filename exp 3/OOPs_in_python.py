@@ -49,7 +49,7 @@ students = {}
 daily_stats = defaultdict(int)
 login_tracker = defaultdict(int)
 
-for sid, name, activity, date, time in read_log_file("activity_log.txt"):
+for sid, name, activity, date, time in read_log_file("./exp 3/activity_log.txt"):
     if sid not in students:
         students[sid] = Student(sid, name)
 
@@ -63,7 +63,7 @@ for sid, name, activity, date, time in read_log_file("activity_log.txt"):
 
 
 # Generate report
-with open("activity_report.txt", "w") as report:
+with open("./exp 3/activity_report.txt", "w") as report:
     print("STUDENT ACTIVITY REPORT")
     print("-" * 40)
     report.write("STUDENT ACTIVITY REPORT\n")
