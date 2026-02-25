@@ -1,29 +1,30 @@
 # Sentiment Analysis using Naïve Bayes (From Scratch)
-# No sklearn, no pretrained models
+# Dataset imported from sklearn
 
-# Dataset
-dataset = [
-    ("I love this product", "Positive"),
-    ("Very bad experience", "Negative"),
-    ("Amazing quality", "Positive"),
-    ("Not worth the money", "Negative"),
-    ("Excellent performance", "Positive"),
-    ("Terrible support", "Negative"),
-    ("Happy with purchase", "Positive"),
-    ("Waste of time", "Negative"),
-    ("Good value", "Positive"),
-    ("Disappointed", "Negative")
-]
+from sklearn.datasets import fetch_20newsgroups
 
-# Separate data by class
+# Load dataset (selecting two categories for binary classification)
+categories = ['rec.sport.baseball', 'sci.med']
+data = fetch_20newsgroups(subset='train', categories=categories)
+
+# Convert into (text, label) format
+dataset = []
+
+for text, target in zip(data.data, data.target):
+    if target == 0:
+        dataset.append((text.lower(), "Positive"))
+    else:
+        dataset.append((text.lower(), "Negative"))
+
+# Split documents by class
 positive_docs = []
 negative_docs = []
 
 for text, label in dataset:
     if label == "Positive":
-        positive_docs.append(text.lower())
+        positive_docs.append(text)
     else:
-        negative_docs.append(text.lower())
+        negative_docs.append(text)
 
 # Count documents
 total_docs = len(dataset)
@@ -63,7 +64,6 @@ def classify_sentence(sentence):
     negative_prob = P_negative
 
     for word in words:
-        # Laplace smoothing
         positive_word_prob = (positive_freq.get(word, 0) + 1) / (positive_words + vocab_size)
         negative_word_prob = (negative_freq.get(word, 0) + 1) / (negative_words + vocab_size)
 
@@ -75,9 +75,9 @@ def classify_sentence(sentence):
     else:
         return "Negative"
 
-# Test sentence
-test_sentence = input("Enter a sentence to classify its sentiment: ")
+# Test input
+test_sentence = input("\nEnter a sentence to classify its sentiment: ")
 result = classify_sentence(test_sentence)
 
-print("Test Sentence :", test_sentence)
-print("Predicted Sentiment :", result)
+print("\nTest Sentence:", test_sentence)
+print("Predicted Sentiment:", result)
